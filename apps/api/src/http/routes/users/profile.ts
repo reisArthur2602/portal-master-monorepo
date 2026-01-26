@@ -1,9 +1,9 @@
-import type { FastifyInstance } from 'fastify'
-import { type ZodTypeProvider } from 'fastify-type-provider-zod'
-import { ProfileResponseSchema } from '@repo/models'
-import { authPlugin } from '@/http/plugins/auth.js'
 import { prisma } from '@/db/client.js'
 import { NotFoundError } from '@/helpers/errors/not-found.js'
+import { authPlugin } from '@/http/plugins/auth.js'
+import { ProfileResponseSchema } from '@repo/models'
+import type { FastifyInstance } from 'fastify'
+import { type ZodTypeProvider } from 'fastify-type-provider-zod'
 
 export const profile = (fastify: FastifyInstance) => {
   fastify
@@ -22,14 +22,17 @@ export const profile = (fastify: FastifyInstance) => {
         },
       },
       async (request, reply) => {
+        const userId = await request.getCurrentUserId()
+
         const user = await prisma.user.findUnique({
           where: {
-            id: request.user.toString(),
+            id: userId,
           },
           select: {
             id: true,
             name: true,
             email: true,
+            role: true,
           },
         })
 

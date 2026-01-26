@@ -1,10 +1,10 @@
 import type { FastifyInstance } from 'fastify'
 import { type ZodTypeProvider } from 'fastify-type-provider-zod'
 
-import { CreateUserRequestSchema, CreateUserResponseSchema } from '@repo/models'
-import { authPlugin } from '@/http/plugins/auth.js'
-import { BadRequestError } from '@/helpers/errors/bad-request.js'
 import { prisma } from '@/db/client.js'
+import { BadRequestError } from '@/helpers/errors/bad-request.js'
+import { authPlugin } from '@/http/plugins/auth.js'
+import { CreateUserRequestSchema, CreateUserResponseSchema } from '@repo/models'
 import bcrypt from 'bcryptjs'
 
 export const createUser = async (fastify: FastifyInstance) => {
@@ -23,9 +23,11 @@ export const createUser = async (fastify: FastifyInstance) => {
             201: CreateUserResponseSchema,
           },
         },
+        preHandler: (request, _) => request.shouldBeAdmin(),
       },
+
       async (request, reply) => {
-        const { email, password, name } = request.body
+        const { email, name } = request.body
 
         const existingUserWithEmail = await prisma.user.findUnique({
           where: { email },
@@ -35,8 +37,9 @@ export const createUser = async (fastify: FastifyInstance) => {
           throw new BadRequestError(
             'Este e-mail está sendo usado por outro membro'
           )
+        const DEFAULT_PASSWORD_USERS = 'master@2026'
 
-        const passwordHash = await bcrypt.hash(password, 10)
+        const passwordHash = await bcrypt.hash(DEFAULT_PASSWORD_USERS, 10)
 
         await prisma.user.create({
           data: { email, password: passwordHash, name },

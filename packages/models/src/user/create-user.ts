@@ -1,9 +1,8 @@
 import { z } from "zod/v4";
 
 export const CreateUserRequestSchema = z.object({
-  email: z.string(),
-  password: z.string(),
-  name: z.string().nullable(),
+  email: z.string().email("Formato de email inválido"),
+  name: z.string().min(3, "O nome deve ter no mínimo 3 caracteres"),
 });
 
 export const CreateUserResponseSchema = z.null();

@@ -5,8 +5,7 @@
   "scripts": {
     "dev": "npx tsx watch src/http/server.ts",
     "build": "tsc",
-    "start": "node dist/http/server.js",
-    "lint": "eslint src/**/*.{ts,js} --fix"
+    "start": "node dist/http/server.js"
   },
   "type": "module",
   "dependencies": {

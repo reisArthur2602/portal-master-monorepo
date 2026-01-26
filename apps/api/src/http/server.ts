@@ -14,6 +14,7 @@ import {
   validatorCompiler,
   type ZodTypeProvider,
 } from 'fastify-type-provider-zod'
+import { patientsRoutes } from './routes/patients/index.js'
 import { usersRoutes } from './routes/users/index.js'
 
 const PORT = 3030
@@ -53,9 +54,9 @@ server.register(fastifySwagger, {
 
 server.register(scalarUI, {
   routePrefix: '/docs',
-  configuration: { theme: 'fastify' },
 })
 
+server.register(patientsRoutes, { prefix: '/patients' })
 server.register(usersRoutes, { prefix: '/users' })
 
 server.listen({ port: PORT, host: '0.0.0.0' }).then(() => {
