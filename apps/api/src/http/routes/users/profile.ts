@@ -1,22 +1,21 @@
-import type { FastifyInstance } from "fastify";
-import { type ZodTypeProvider } from "fastify-type-provider-zod";
-import { ProfileResponseSchema } from "@repo/models";
-
-import { NotFoundError } from "../../../helpers/errors/not-found";
-import { authPlugin } from "../../plugins/auth";
-import { prisma } from "../../../db/client";
+import type { FastifyInstance } from 'fastify'
+import { type ZodTypeProvider } from 'fastify-type-provider-zod'
+import { ProfileResponseSchema } from '@repo/models'
+import { authPlugin } from '@/http/plugins/auth.js'
+import { prisma } from '@/db/client.js'
+import { NotFoundError } from '@/helpers/errors/not-found.js'
 
 export const profile = (fastify: FastifyInstance) => {
   fastify
     .withTypeProvider<ZodTypeProvider>()
     .register(authPlugin)
     .get(
-      "/profile",
+      '/profile',
       {
         schema: {
-          tags: ["Users"],
-          summary: "Get profile user",
-          operationId: "profile",
+          tags: ['Users'],
+          summary: 'Get profile user',
+          operationId: 'profile',
           response: {
             200: ProfileResponseSchema,
           },
@@ -32,13 +31,13 @@ export const profile = (fastify: FastifyInstance) => {
             name: true,
             email: true,
           },
-        });
+        })
 
-        if (!user) throw new NotFoundError("Usuário não encontrado");
+        if (!user) throw new NotFoundError('Usuário não encontrado')
 
         return reply.status(200).send({
           user,
-        });
-      },
-    );
-};
+        })
+      }
+    )
+}

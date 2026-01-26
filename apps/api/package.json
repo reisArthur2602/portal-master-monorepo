@@ -1,6 +1,6 @@
 {
   "name": "@repo/api",
-  "version": "1",
+  "version": "1.0.0",
   "main": "src/http/server.ts",
   "scripts": {
     "dev": "npx tsx watch src/http/server.ts",
@@ -31,9 +31,14 @@
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
     "@repo/models": "workspace:*",
-    "@repo/typescript-config": "workspace:*",
+    "@repo/tsconfig": "workspace:*",
     "@types/pg": "^8.16.0",
-    "eslint": "^9.39.1",
     "prisma": "^7.3.0"
+  },
+  "prettier": "@repo/prettier",
+  "eslintConfig": {
+    "extends": [
+      "@repo/eslint-config/node"
+    ]
   }
 }

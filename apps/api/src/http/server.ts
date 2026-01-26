@@ -1,37 +1,36 @@
-import fastify from "fastify";
-import fastifyCors from "@fastify/cors";
-import fastifyJwt from "@fastify/jwt";
+import fastifyCors from '@fastify/cors'
+import fastifyJwt from '@fastify/jwt'
+import fastify from 'fastify'
 
-import { fastifyMultipart } from "@fastify/multipart";
+import { fastifyMultipart } from '@fastify/multipart'
 
-import fastifySwagger from "@fastify/swagger";
-import scalarUI from "@scalar/fastify-api-reference";
+import fastifySwagger from '@fastify/swagger'
+import scalarUI from '@scalar/fastify-api-reference'
 
+import { errorHandler } from '@/helpers/errors/index.js'
 import {
   jsonSchemaTransform,
   serializerCompiler,
   validatorCompiler,
   type ZodTypeProvider,
-} from "fastify-type-provider-zod";
+} from 'fastify-type-provider-zod'
+import { usersRoutes } from './routes/users/index.js'
 
-import { errorHandler } from "../helpers/errors";
-import { usersRoutes } from "./routes/users";
+const PORT = 3030
 
-const PORT = 3030;
+const server = fastify().withTypeProvider<ZodTypeProvider>()
 
-const server = fastify().withTypeProvider<ZodTypeProvider>();
-
-server.setSerializerCompiler(serializerCompiler);
-server.setValidatorCompiler(validatorCompiler);
-server.setErrorHandler(errorHandler);
+server.setSerializerCompiler(serializerCompiler)
+server.setValidatorCompiler(validatorCompiler)
+server.setErrorHandler(errorHandler)
 
 server.register(fastifyCors, {
   origin: true,
-});
+})
 
 server.register(fastifyJwt, {
-  secret: "jwt_secret",
-});
+  secret: 'jwt_secret',
+})
 
 server.register(fastifyMultipart, {
   limits: {
@@ -39,28 +38,28 @@ server.register(fastifyMultipart, {
     files: 1,
     fields: 10,
   },
-});
+})
 
 server.register(fastifySwagger, {
   openapi: {
     info: {
-      title: "Portal Master — API",
-      version: "1.0.0",
+      title: 'Portal Master — API',
+      version: '1.0.0',
     },
   },
 
   transform: jsonSchemaTransform,
-});
+})
 
 server.register(scalarUI, {
-  routePrefix: "/docs",
-  configuration: { theme: "fastify" },
-});
+  routePrefix: '/docs',
+  configuration: { theme: 'fastify' },
+})
 
-server.register(usersRoutes, { prefix: "/users" });
+server.register(usersRoutes, { prefix: '/users' })
 
-server.listen({ port: PORT, host: "0.0.0.0" }).then(() => {
-  console.clear();
-  console.log("🌐 URL:                http://localhost:" + PORT);
-  console.log("📘 Documentação:       http://localhost:" + PORT + "/docs");
-});
+server.listen({ port: PORT, host: '0.0.0.0' }).then(() => {
+  console.clear()
+  console.log('🌐 URL:                http://localhost:' + PORT)
+  console.log('📘 Documentação:       http://localhost:' + PORT + '/docs')
+})
