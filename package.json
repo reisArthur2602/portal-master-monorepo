@@ -1,5 +1,5 @@
 {
-  "name": "portal-master-monorepo",
+  "name": "portal-master-api",
   "private": true,
   "scripts": {
     "build": "turbo run build",
@@ -9,6 +9,8 @@
     "check-types": "turbo run check-types"
   },
   "devDependencies": {
+    "@types/node": "^25.0.10",
+    "tsx": "^4.21.0",
     "prettier": "^3.7.4",
     "turbo": "^2.7.6",
     "typescript": "5.9.2"
