@@ -1,4 +1,5 @@
 export * from './create-patient.js';
+export * from './get-patient.js';
 export * from './list-patients.js';
 export * from './remove-patients.js';
 

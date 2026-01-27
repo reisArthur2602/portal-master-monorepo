@@ -7,8 +7,6 @@ export const ListPatientsResponseSchema = z.object({
             name: z.string(),
             cpf: z.string(),
             phone: z.string(),
-            birthDate: z.date(),
-            createdAt: z.date(),
         })
     ),
 });

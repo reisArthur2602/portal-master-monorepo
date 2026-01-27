@@ -23,7 +23,9 @@ export const listPatients = async (fastify: FastifyInstance) => {
       },
 
       async (_, reply) => {
-        const patients = await prisma.patient.findMany()
+        const patients = await prisma.patient.findMany({
+          select: { id: true, name: true, cpf: true, phone: true },
+        })
 
         return reply.status(200).send({ patients })
       }
