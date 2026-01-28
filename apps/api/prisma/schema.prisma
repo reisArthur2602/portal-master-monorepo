@@ -1,35 +1,64 @@
 generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma"
+    provider = "prisma-client"
+    output   = "../generated/prisma"
 }
 
 datasource db {
-  provider = "postgresql"
+    provider = "postgresql"
 }
 
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  name      String
-  password  String
-  createdAt DateTime @default(now())
-  role      UserRole @default(MEMBER)
+    id        String   @id @default(cuid())
+    email     String   @unique
+    name      String
+    password  String
+    createdAt DateTime @default(now())
+    role      UserRole @default(MEMBER)
 
-  @@map("users")
+    @@map("users")
 }
 
 model Patient {
-  id        String   @id @default(cuid())
-  name      String
-  cpf       String   @unique
-  phone     String   @unique
-  birthDate DateTime
-  createdAt DateTime @default(now())
+    id        String   @id @default(cuid())
+    name      String
+    cpf       String   @unique
+    phone     String   @unique
+    birthDate DateTime
+    createdAt DateTime @default(now())
+    exams     Exam[]
 
-  @@map("patients")
+    @@map("patients")
+}
+
+model Exam {
+    id             String     @id @default(cuid())
+    status         ExamStatus @default(Pending)
+    type           ExamType   @default(External)
+    registry       Int?
+    description    String
+    orthancStudyId String?
+    performedBy    String
+    createdAt      DateTime   @default(now())
+    notes          String?
+    patientId String
+    patient   Patient @relation(fields: [patientId], references: [id])
+
+    @@map("exams")
+}
+
+enum ExamStatus {
+    Pending
+    Ready
+    AwaitingPickup
+    Delivered
+}
+
+enum ExamType {
+    External
+    DICOM
 }
 
 enum UserRole {
-  MEMBER
-  ADMIN
+    MEMBER
+    ADMIN
 }

@@ -1,10 +1,10 @@
 import { cuid, z } from 'zod/v4';
 
-export const getPatientRequestSchema = z.object({
+export const GetPatientRequestSchema = z.object({
     patientId: z.cuid(),
 });
 
-export const getPatientResponseSchema = z.object({
+export const GetPatientResponseSchema = z.object({
     patient: z.object({
         id: cuid(),
         name: z.string(),
@@ -15,5 +15,5 @@ export const getPatientResponseSchema = z.object({
     }),
 });
 
-export type GetPatientResponse = z.infer<typeof getPatientResponseSchema>;
-export type GetPatientRequest = z.infer<typeof getPatientRequestSchema>;
+export type GetPatientResponse = z.infer<typeof GetPatientResponseSchema>;
+export type GetPatientRequest = z.infer<typeof GetPatientRequestSchema>;

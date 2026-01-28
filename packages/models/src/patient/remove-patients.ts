@@ -7,4 +7,4 @@ export const RemovePatientRequestSchema = z.object({
 export const RemovePatientResponseSchema = z.null();
 
 export type RemovePatientRequest = z.infer<typeof RemovePatientRequestSchema>;
-export type RemoveUserResponse = z.infer<typeof RemovePatientResponseSchema>;
+export type RemovePatientResponse = z.infer<typeof RemovePatientResponseSchema>;

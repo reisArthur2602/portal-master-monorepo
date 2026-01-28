@@ -4,7 +4,7 @@ import { type ZodTypeProvider } from 'fastify-type-provider-zod'
 import { prisma } from '@/db/client.js'
 import { NotFoundError } from '@/helpers/errors/not-found.js'
 import { authPlugin } from '@/http/plugins/auth.js'
-import { getPatientRequestSchema, getPatientResponseSchema } from '@repo/models'
+import { GetPatientRequestSchema, GetPatientResponseSchema } from '@repo/models'
 
 export const getPatient = async (fastify: FastifyInstance) => {
   fastify
@@ -17,9 +17,9 @@ export const getPatient = async (fastify: FastifyInstance) => {
           tags: ['Patients'],
           summary: 'Get Patient',
           operationId: 'getPatient',
-          params: getPatientRequestSchema,
+          params: GetPatientRequestSchema,
           response: {
-            200: getPatientResponseSchema,
+            200: GetPatientResponseSchema,
           },
         },
       },
@@ -31,8 +31,7 @@ export const getPatient = async (fastify: FastifyInstance) => {
           where: { id: patientId },
         })
 
-        if (!patient)
-          throw new NotFoundError('O paciente com o não foi encontrado')
+        if (!patient) throw new NotFoundError('O paciente não foi encontrado')
 
         return reply.status(200).send({ patient })
       }
